@@ -1,0 +1,23 @@
+[
+    {
+      "id": "1",
+      "name": "Kannettava tietokone",
+      "description": "Tehokas kannettava tietokone",
+      "price": 999.99,
+      "category": "Elektroniikka"
+    },
+    {
+      "id": "2",
+      "name": "T-paita",
+      "description": "Mukava T-Paita",
+      "price": 20,
+      "category": "Vaatteet"
+    },
+    {
+      "id": "3",
+      "name": "48 Laws of Power",
+      "description": "48 Laws of Power",
+      "price": 40,
+      "category": "Kirjat"
+    }
+  ]  
