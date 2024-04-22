@@ -1,22 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lisää tuote</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lisäyslomake</title>
 </head>
 <body>
-  <h1>Lisää tuote</h1>
-  <form action="/lisaa" method="POST">
-    <label for="name">Nimi:</label>
-    <input type="text" id="name" name="name" required><br>
-    <label for="description">Kuvaus:</label>
-    <textarea id="description" name="description" required></textarea><br>
-    <label for="price">Hinta:</label>
-    <input type="number" id="price" name="price" step="0.01" required><br>
-    <label for="category">Kategoria:</label>
-    <input type="text" id="category" name="category" required><br>
-    <button type="submit">Lisää tuote</button>
-  </form>
+
+<h2>Lisää uusi tuote</h2>
+
+<form id="addForm">
+  <label for="productName">Tuotteen nimi:</label><br>
+  <input type="text" id="productName" name="productName"><br><br>
+  <label for="productPrice">Tuotteen hinta:</label><br>
+  <input type="text" id="productPrice" name="productPrice"><br><br>
+  <button type="button" onclick="addProduct()">Lisää tuote</button>
+</form>
+
+<script>
+function addProduct() {
+  var productName = document.getElementById("productName").value;
+  var productPrice = document.getElementById("productPrice").value;
+
+  var xhr = new XMLHttpRequest();
+  
+  xhr.open("POST", "/lisaa", true);
+
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      alert("Tuote lisätty onnistuneesti!");
+      window.location.href = "/";
+    } else {
+      alert("Virhe lisättäessä tuotetta. Yritä uudelleen.");
+    }
+  };
+
+  var data = JSON.stringify({ productName: productName, productPrice: productPrice });
+
+  xhr.send(data);
+}
+</script>
+
 </body>
 </html>

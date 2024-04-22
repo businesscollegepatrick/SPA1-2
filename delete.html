@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poista tuote</title>
+</head>
+<body>
+
+<h2>Poista tuote</h2>
+
+<form id="deleteForm">
+  <label for="productSelect">Valitse poistettava tuote:</label><br>
+  <select id="productSelect" name="productSelect"></select><br><br>
+  <button type="button" onclick="deleteProduct()">Poista tuote</button>
+</form>
+
+<script>
+function deleteProduct() {
+  var productId = document.getElementById("productSelect").value;
+
+  fetch('/poista', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ productId: productId })
+  })
+  .then(response => {
+    if (response.ok) {
+      alert("Tuote poistettu onnistuneesti!");
+      location.reload(); // Lataa sivu uudelleen päivittääksesi tuotteet
+    } else {
+      throw new Error('Virhe poistettaessa tuotetta.');
+    }
+  })
+  .catch(error => {
+    console.error('Poistovirhe:', error);
+    alert("Virhe poistettaessa tuotetta. Yritä uudelleen.");
+  });
+}
+
+// Hae tuotteet ja päivitä pudotusvalikko
+function fetchProducts() {
+  fetch('/tuotteet')
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Virhe haettaessa tuotteita.');
+    }
+  })
+  .then(products => {
+    var select = document.getElementById("productSelect");
+
+    // Tyhjennä ensin pudotusvalikko
+    select.innerHTML = "";
+
+    // Lisää vaihtoehdot pudotusvalikkoon
+    products.forEach(product => {
+      var option = document.createElement("option");
+      option.text = product.name;
+      option.value = product.id;
+      select.add(option);
+    });
+  })
+  .catch(error => {
+    console.error('Tuotehaun virhe:', error);
+    alert("Virhe haettaessa tuotteita. Yritä uudelleen.");
+  });
+}
+
+// Kutsu funktiota tuotteiden hakemiseksi ja päivittämiseksi
+fetchProducts();
+</script>
+
+</body>
+</html>
